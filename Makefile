@@ -7,6 +7,9 @@ help:
 .PHONY: start
 start: build install migrations countries-sync up ## Create dependencies and up local web server
 
+.PHONY: tests
+tests: build install migrations countries-sync phpunit ## Create dependencies and run tests
+
 .PHONY: build
 build: ## Build docker images
 		$(compose) build
@@ -50,8 +53,8 @@ cs-fix: ## Fix codestyle
 .PHONY: qa
 qa: cs phpstan psalm ## Run code quality checkers
 
-.PHONY: tests
-tests: ## Run tests
+.PHONY: phpunit
+phpunit: ## Run phpunit
 		$(compose) run --rm php bash -lc 'bin/phpunit'
 
 .PHONY: coverage

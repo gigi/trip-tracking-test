@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace App\Request;
 
+use App\Request\Converter\JsonBodySerializableInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RegistrationRequestType implements JsonBodySerializableInterface
+class RegistrationRequest implements JsonBodySerializableInterface
 {
     /**
      * @Assert\NotBlank()
+     * @Assert\Length(min=3)
      */
     private string $username;
 
     /**
      * @Assert\NotBlank()
+     * @Assert\Length(min=6)
      */
     private string $password;
 

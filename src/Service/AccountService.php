@@ -7,7 +7,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Exception\RegistrationException;
 use App\Repository\UserRepositoryInterface;
-use App\Request\RegistrationRequestType;
+use App\Request\RegistrationRequest;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -65,11 +65,11 @@ class AccountService
         $this->entityManager->flush();
     }
 
-    public function updateAccount(UserInterface $user, RegistrationRequestType $registration): void
+    public function updateAccount(UserInterface $user, RegistrationRequest $registration): void
     {
         // TODO implement unique validation for username and email
         $user = $this->getUserByUsername($user->getUsername());
-        $user->updateFromRegistrationType($registration);
+        $user->updateFromRegistrationRequest($registration);
         $user->setPassword($this->passwordEncoder->encodePassword($user, $registration->getPassword()));
         $this->entityManager->flush();
     }

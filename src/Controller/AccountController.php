@@ -6,7 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Login;
 use App\Exception\RegistrationException;
-use App\Request\RegistrationRequestType;
+use App\Request\RegistrationRequest;
 use App\Service\AccountService;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTTokenManagerInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
@@ -45,13 +45,16 @@ class AccountController
      * )
      * @OA\RequestBody(
      *     @OA\JsonContent(
-     *        ref=@Model(type=RegistrationRequestType::class)
+     *        ref=@Model(type=RegistrationRequest::class)
      *     )
      * )
+     * @param RegistrationRequest $registration
+     * @param JWTTokenManagerInterface $jwtManager
+     * @return Response
      * @throws RegistrationException
      */
     public function register(
-        RegistrationRequestType $registration,
+        RegistrationRequest $registration,
         JWTTokenManagerInterface $jwtManager
     ): Response {
         $user = $this->service->create(
@@ -78,13 +81,17 @@ class AccountController
      * )
      * @OA\RequestBody(
      *     @OA\JsonContent(
-     *        ref=@Model(type=RegistrationRequestType::class)
+     *        ref=@Model(type=RegistrationRequest::class)
      *     )
      * )
      *
      * @Security(name="Bearer")
+     *
+     * @param RegistrationRequest $registration
+     * @param SecurityComponent $security
+     * @return Response
      */
-    public function update(RegistrationRequestType $registration, SecurityComponent $security): Response
+    public function update(RegistrationRequest $registration, SecurityComponent $security): Response
     {
         /** @var UserInterface $user */
         $user = $security->getUser();
@@ -97,6 +104,9 @@ class AccountController
      * Delete account
      *
      * @Security(name="Bearer")
+     *
+     * @param SecurityComponent $security
+     * @return Response
      */
     public function delete(SecurityComponent $security): Response
     {

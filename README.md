@@ -44,5 +44,8 @@ make
 
 ## TODO
 - [ ] Make prod ready docker image
-- [ ] Totally remove database knowledge from domain entities (e.g. use uuid)
-- [ ] Remove all framework-related annotations from domain entities (e.g. use uuid)
+- [ ] Totally remove database knowledge from domain entities (e.g. replace int id with uuid)
+- [ ] Remove all framework-related annotations from domain entities
+- [ ] Add more validations
+- [ ] Add more tests
+- [ ] Add CI

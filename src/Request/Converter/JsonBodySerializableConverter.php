@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Request;
+namespace App\Request\Converter;
 
 use App\Exception\ValidationException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;

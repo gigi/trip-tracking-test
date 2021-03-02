@@ -6,16 +6,60 @@ namespace App\Service;
 
 use App\Entity\Trip;
 use App\Entity\User;
+use App\Exception\TripException;
+use App\Repository\CountryRepositoryInterface;
 use App\Repository\TripRepositoryInterface;
+use App\Request\SearchTripRequest;
 use DateTimeInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class TripService
 {
-    public function __construct(TripRepositoryInterface $tripRepository)
-    {
+    private TripRepositoryInterface $tripRepository;
+    private CountryRepositoryInterface $countryRepository;
+    private EntityManagerInterface $entityManager;
+
+    public function __construct(
+        TripRepositoryInterface $tripRepository,
+        EntityManagerInterface $entityManager,
+        CountryRepositoryInterface $countryRepository
+    ) {
+        $this->tripRepository = $tripRepository;
+        $this->entityManager = $entityManager;
+        $this->countryRepository = $countryRepository;
     }
 
-    public function addTrip(User $user, string $countyCode, DateTimeInterface $startDate, DateTimeInterface $endDate): Trip
+    public function addTrip(
+        User $user,
+        string $countryCode,
+        DateTimeInterface $startDate,
+        DateTimeInterface $endDate,
+        string $notes = null
+    ): Trip {
+        $trips = $this->tripRepository->findByRange($user, $startDate, $endDate);
+        if (count($trips) > 0) {
+            throw new TripException("Selected dates already reserved for trips");
+        }
+        $country = $this->countryRepository->findOneByCode($countryCode);
+        if (null === $country) {
+            throw new TripException(sprintf("Country %s not found", $countryCode));
+        }
+        $trip = new Trip($user, $countryCode, $startDate, $endDate, $notes);
+        $this->tripRepository->add($trip);
+        $this->entityManager->flush();
+
+        return $trip;
+    }
+
+    /**
+     * @param User $user
+     * @param string|null $code
+     * @param DateTimeInterface|null $startDate
+     * @param DateTimeInterface|null $endDate
+     * @return Trip[]
+     */
+    public function search(User $user, ?string $code, ?DateTimeInterface $startDate, ?DateTimeInterface $endDate): array
     {
+        return $this->tripRepository->filter($user, $code, $startDate, $endDate);
     }
 }

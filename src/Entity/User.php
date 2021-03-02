@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace App\Entity;
 
-use App\Request\RegistrationRequestType;
+use App\Request\RegistrationRequest;
+use JsonSerializable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User implements UserInterface
+class User implements UserInterface, JsonSerializable
 {
     private ?int $id;
 
@@ -43,6 +44,9 @@ class User implements UserInterface
         return $this->email;
     }
 
+    /**
+     * @return string[]
+     */
     public function getRoles(): array
     {
         return [];
@@ -57,7 +61,7 @@ class User implements UserInterface
     {
     }
 
-    public function updateFromRegistrationType(RegistrationRequestType $registration): self
+    public function updateFromRegistrationRequest(RegistrationRequest $registration): self
     {
         if (!empty($registration->getUsername())) {
             $this->username = $registration->getUsername();
@@ -67,5 +71,10 @@ class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public function jsonSerialize(): array
+    {
+        return ['id' => $this->id];
     }
 }
