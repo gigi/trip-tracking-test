@@ -37,4 +37,11 @@ interface TripRepositoryInterface
         ?DateTimeInterface $startDate,
         ?DateTimeInterface $endDate
     ): array;
+
+    /**
+     * @param User $user
+     * @param int $id
+     * @return Trip|null
+     */
+    public function findById(User $user, int $id): ?Trip;
 }

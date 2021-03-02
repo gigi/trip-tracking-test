@@ -22,7 +22,8 @@ class CreateTripRequest implements JsonBodySerializableInterface
      * @Assert\NotBlank
      */
     private DateTimeInterface $endDate;
-    private ?string $notes;
+
+    private ?string $notes = null;
 
     public function getCountryCode(): string
     {

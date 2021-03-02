@@ -11,6 +11,9 @@ use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
+/**
+ * @method Trip|null findOneBy(array $criteria, array $orderBy = null)
+ */
 class TripRepository extends ServiceEntityRepository implements TripRepositoryInterface
 {
     public function __construct(ManagerRegistry $registry)
@@ -67,4 +70,13 @@ class TripRepository extends ServiceEntityRepository implements TripRepositoryIn
             ->getResult();
     }
 
+    /**
+     * @param User $user
+     * @param int $id
+     * @return Trip|null
+     */
+    public function findById(User $user, int $id): ?Trip
+    {
+        return $this->findOneBy(['user' => $user, 'id' => $id]);
+    }
 }

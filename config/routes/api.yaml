@@ -18,12 +18,18 @@ tracking_list:
   methods: get
   controller: App\Controller\TripController::list
 
+
+tracking_get:
+  path: /trip/{id}
+  methods: get
+  controller: App\Controller\TripController::get
+
 tracking_add:
   path: /trip
   methods: post
   controller: App\Controller\TripController::add
 
 tracking_delete:
-  path: /trip
+  path: /trip/{id}
   methods: delete
   controller: App\Controller\TripController::delete

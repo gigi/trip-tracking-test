@@ -60,6 +60,36 @@ class TripService
      */
     public function search(User $user, ?string $code, ?DateTimeInterface $startDate, ?DateTimeInterface $endDate): array
     {
+        $code = null !== $code ? strtoupper($code) : null;
         return $this->tripRepository->filter($user, $code, $startDate, $endDate);
+    }
+
+    /**
+     * @param User $user
+     * @param int $id
+     * @return mixed
+     * @throws TripException
+     */
+    public function getOne(User $user, int $id): Trip
+    {
+        $trip = $this->tripRepository->findById($user, $id);
+        if (null !== $trip) {
+            return $trip;
+        }
+
+        throw new TripException('Trip not found', 404);
+    }
+
+    /**
+     * @param User $user
+     * @param int $id
+     * @throws TripException
+     */
+    public function delete(User $user, int $id): void
+    {
+        $trip = $this->getOne($user, $id);
+
+        $this->entityManager->remove($trip);
+        $this->entityManager->flush();
     }
 }
