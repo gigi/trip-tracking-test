@@ -1,0 +1,31 @@
+version: '3.7'
+
+services:
+
+  php:
+    container_name: trips-test-php
+    build:
+      dockerfile: Dockerfile
+      context: .
+    environment:
+      - DATABASE_URL=pgsql://postgres@postgres:5432/postgres
+      - JWT_SECRET_KEY=%kernel.project_dir%/config/jwt/private.pem
+      - JWT_PUBLIC_KEY=%kernel.project_dir%/config/jwt/public.pem
+      - JWT_PASSPHRASE=ba101fb2f2f8c267ff84e895bb23f24c
+    volumes:
+      - ./:/app:cached
+    ports:
+      - 8000:8000
+    depends_on:
+      - postgres
+    command: symfony serve --port=8000 --no-tls
+
+  postgres:
+    container_name: trips-test-postgres
+    image: postgres:11
+    environment:
+      - POSTGRES_HOST_AUTH_METHOD=trust
+    ports:
+      - 5432:5432
+    restart: on-failure
+    command: [ "postgres", "-c", "log_statement=all" ]

@@ -1,0 +1,41 @@
+nelmio_api_doc:
+  documentation:
+    info:
+      title: Trip tracking app
+      description: Trip tracking test application
+      version: 0.0.1
+    components:
+      securitySchemes:
+        Bearer:
+          type: http
+          scheme: bearer
+          bearerFormat: JWT
+    paths:
+      /api/v1/login:
+        post:
+          tags:
+            - Login
+          description: Login into the api.
+          requestBody:
+            required: true
+            content:
+              application/json:
+                schema:
+                  properties:
+                    username:
+                      description: 'Username to login'
+                      type: string
+                      example: "user1"
+                    password:
+                      description: 'Password'
+                      type: string
+                      example: "password1"
+                  type: object
+          responses:
+            '200':
+              description: Login successful
+            '401':
+              description: Invalid credentials
+  areas: # to filter documented areas
+    path_patterns:
+      - ^/api(?!/doc$) # Accepts routes under /api except /api/doc

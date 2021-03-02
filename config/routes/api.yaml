@@ -1,0 +1,29 @@
+account_create:
+  path: /register
+  methods: post
+  controller: App\Controller\AccountController::register
+
+account_update:
+  path: /account
+  methods: put
+  controller: App\Controller\AccountController::update
+
+account_delete:
+  path: /account
+  methods: delete
+  controller: App\Controller\AccountController::delete
+
+tracking_list:
+  path: /trip
+  methods: get
+  controller: App\Controller\TripController::list
+
+tracking_add:
+  path: /trip
+  methods: post
+  controller: App\Controller\TripController::add
+
+tracking_delete:
+  path: /trip
+  methods: delete
+  controller: App\Controller\TripController::delete
