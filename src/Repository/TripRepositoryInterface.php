@@ -29,7 +29,7 @@ interface TripRepositoryInterface
      * @param string|null $countryCode
      * @param DateTimeInterface|null $startDate
      * @param DateTimeInterface|null $endDate
-     * @return array
+     * @return Trip[]
      */
     public function filter(
         User $user,

@@ -40,7 +40,7 @@ psalm: ## Run psalm
 
 .PHONY: phpstan
 phpstan: ## Run phpstan
-		$(compose) run --rm php bash -lc './vendor/bin/phpstan analyze'
+		$(compose) run --rm php bash -lc 'php -d memory_limit=-1 ./vendor/bin/phpstan analyze'
 
 .PHONY: cs
 cs: ## Run codestyle check
@@ -51,7 +51,7 @@ cs-fix: ## Fix codestyle
 		$(compose) run --rm php bash -lc './vendor/bin/ecs check src --fix'
 
 .PHONY: qa
-qa: cs phpstan psalm ## Run code quality checkers
+qa: build install cs phpstan ## Run code quality checkers
 
 .PHONY: phpunit
 phpunit: ## Run phpunit

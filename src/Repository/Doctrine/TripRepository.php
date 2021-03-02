@@ -40,6 +40,9 @@ class TripRepository extends ServiceEntityRepository implements TripRepositoryIn
             ->getResult();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function filter(
         User $user,
         ?string $countryCode,

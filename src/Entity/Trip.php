@@ -39,6 +39,9 @@ class Trip implements JsonSerializable
         $this->notes = $notes;
     }
 
+    /**
+     * @return array<string, DateTimeInterface|int|string|null>
+     */
     public function jsonSerialize(): array
     {
         return [

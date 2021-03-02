@@ -9,7 +9,6 @@ use App\Entity\User;
 use App\Exception\TripException;
 use App\Repository\CountryRepositoryInterface;
 use App\Repository\TripRepositoryInterface;
-use App\Request\SearchTripRequest;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -67,7 +66,7 @@ class TripService
     /**
      * @param User $user
      * @param int $id
-     * @return mixed
+     * @return Trip
      * @throws TripException
      */
     public function getOne(User $user, int $id): Trip

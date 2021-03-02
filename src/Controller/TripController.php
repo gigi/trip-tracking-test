@@ -15,11 +15,9 @@ use DateTimeInterface;
 use Nelmio\ApiDocBundle\Annotation\Model;
 use Nelmio\ApiDocBundle\Annotation\Security;
 use OpenApi\Annotations as OA;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Security as SecurityComponent;
 
 /**
@@ -91,20 +89,19 @@ class TripController
         Request $request,
         SecurityComponent $security
     ): Response {
-
         $startDate = $request->query->has('start')
-            ? DateTime::createFromFormat('Y-m-d', $request->query->get('start'))
+            ? $this->parseDate($request->query->get('start'))
             : null;
 
         $endDate = $request->query->has('end')
-            ? DateTime::createFromFormat('Y-m-d', $request->query->get('end'))
+            ? $this->parseDate($request->query->get('end'))
             : null;
 
         $trips = $this->tripService->search(
             $this->getUser(),
             $request->query->get('country'),
-            $startDate ?? null,
-            $endDate ?? null
+            $startDate,
+            $endDate
         );
 
         return new JsonResponse($trips);
@@ -218,5 +215,15 @@ class TripController
         }
 
         return $user;
+    }
+
+    private function parseDate(?string $dateString): ?DateTimeInterface
+    {
+        if (empty($dateString)) {
+            return null;
+        }
+        $date = DateTime::createFromFormat('Y-m-d', $dateString);
+
+        return false !== $date ? $date : null;
     }
 }

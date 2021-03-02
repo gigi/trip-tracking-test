@@ -5,10 +5,9 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Request\RegistrationRequest;
-use JsonSerializable;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-class User implements UserInterface, JsonSerializable
+class User implements UserInterface
 {
     private ?int $id;
 
@@ -71,10 +70,5 @@ class User implements UserInterface, JsonSerializable
         }
 
         return $this;
-    }
-
-    public function jsonSerialize(): array
-    {
-        return ['id' => $this->id];
     }
 }

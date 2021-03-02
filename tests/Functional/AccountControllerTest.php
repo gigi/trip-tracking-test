@@ -11,11 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class AccountControllerTest extends WebTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-    }
-
     public function testRegister(): void
     {
         $client = static::createClient();
